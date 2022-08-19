@@ -5,17 +5,17 @@ import React from 'react';
 class App extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {authenticated: false, username: ''};
+    this.state = {authenticated: false, username: '', password: ''};
   }
 
   render() {
     if (!this.state.authenticated)
     {
-      return ( <Login authenticated={this.state.authenticated} username={this.state.username} /> );
+      return ( <Login authenticated={this.state.authenticated}  /> );
     }
     else
     {
-      return ( <Content authenticated={this.state.authenticated} username={this.state.username} /> );
+      return ( <Content authenticated={this.state.authenticated}  /> );
     }
   } 
 }
@@ -24,10 +24,12 @@ class App extends React.Component{
 class Login extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {authenticated: props.authenticated, username: props.username, password: '', failedLogin: false};
+    this.state = {authenticated: props.authenticated, username: '', password: '', failedLogin: false};
 
     // This binding is necessary to make `this` work in the callback
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
   handleUsernameChange(event) {
@@ -40,10 +42,6 @@ class Login extends React.Component{
 
   handleSubmit() {
     if(this.state.username === 'joh' && this.state.password === 'test'){
-      // this.setState(prevState => ({
-      //   isToggleOn: !prevState.isToggleOn
-      // }));
-
       this.setState({
         authenticated: true,
         failedLogin: false
@@ -64,11 +62,12 @@ class Login extends React.Component{
             Welcome to Justin's React app.
           </p>
           {/* <form onSubmit={this.handleSubmit}> */}
-            <label for="username">Username:</label>
+            <label>Username:</label>
             <input type="text" id="username" name="username" onChange={this.handleUsernameChange} />
-            <label for="password">Password:</label>
-            <input type="text" id="password" name="password" value={this.state.password} onChange={this.handlePasswordChange} />
-            <input type="submit" value="Submit" onClick={this.handleSubmit} />
+            {/* <label>{this.state.username}</label> */}
+            <label>Password:</label>
+            <input type="text" id="password" name="password" onChange={this.handlePasswordChange} />
+            <br/><input type="submit" value="Submit" onClick={this.handleSubmit} />
           {/* </form> */}
           {this.state.failedLogin &&
               'Login failed'
