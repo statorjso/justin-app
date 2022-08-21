@@ -7,16 +7,25 @@ class App extends React.Component{
     super(props);
     this.state = {authenticated: false, username: '', password: ''};
   }
+  
+  login = (username) => {
+    this.setState({
+      authenticated: true,
+      username: username
+    });
+  }
+
+  logout() {
+    this.setState({
+      authenticated: false,
+      username: ''
+    });
+  }
 
   render() {
-    if (!this.state.authenticated)
-    {
-      return ( <Login authenticated={this.state.authenticated}  /> );
-    }
-    else
-    {
-      return ( <Content authenticated={this.state.authenticated}  /> );
-    }
+      return ( 
+        this.state.authenticated ? <Content logout={this.logout} /> : <Login login={this.login} />
+      )
   } 
 }
 
@@ -24,7 +33,7 @@ class App extends React.Component{
 class Login extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {authenticated: props.authenticated, username: '', password: '', failedLogin: false};
+    this.state = {username: '', password: '', failedLogin: false};
 
     // This binding is necessary to make `this` work in the callback
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,15 +51,25 @@ class Login extends React.Component{
 
   handleSubmit() {
     if(this.state.username === 'joh' && this.state.password === 'test'){
-      this.setState({
-        authenticated: true,
-        failedLogin: false
-      });
+      // this.setState({
+      //   authenticated: true,
+      //   failedLogin: false
+      // });
+
+      // this.props.authenticated = true;
+      // this.props.failedLogin = false;
+
+      // this.props.login(e.target.value);
+      this.props.login(this.state.username);
     }
     else
-    this.setState({
-      failedLogin: true
-    });
+      // this.setState({
+      //   authenticated: false,
+      //   failedLogin: true
+      // });
+
+      // this.props.authenticated = false;
+      this.setState({failedLogin: true});
   }
   
   render() {
@@ -62,6 +81,7 @@ class Login extends React.Component{
             Welcome to Justin's React app.
           </p>
           {/* <form onSubmit={this.handleSubmit}> */}
+            {/* <label>{this.props.authenticated}</label> */}
             <label>Username:</label>
             <input type="text" id="username" name="username" onChange={this.handleUsernameChange} />
             {/* <label>{this.state.username}</label> */}
@@ -69,9 +89,7 @@ class Login extends React.Component{
             <input type="text" id="password" name="password" onChange={this.handlePasswordChange} />
             <br/><input type="submit" value="Submit" onClick={this.handleSubmit} />
           {/* </form> */}
-          {this.state.failedLogin &&
-              'Login failed'
-          }
+          { this.state.failedLogin && 'Login failed' }
         </header>
       </div>
       );
