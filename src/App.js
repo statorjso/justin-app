@@ -5,17 +5,25 @@ import React from 'react';
 class App extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {authenticated: false, username: '', password: ''};
+    this.state = {authenticated: false, username: '', password: '', failedLogin: false};
   }
   
-  login = (username) => {
+  login = (success, username) => {
+    if (success)
+      this.setState({
+        authenticated: true,
+        username: username,
+        failedLogin: false
+      });
+    else
     this.setState({
-      authenticated: true,
-      username: username
+      authenticated: false,
+      username: '',
+      failedLogin: true
     });
   }
 
-  logout() {
+  logout = () => {
     this.setState({
       authenticated: false,
       username: ''
@@ -24,16 +32,18 @@ class App extends React.Component{
 
   render() {
       return ( 
-        this.state.authenticated ? <Content logout={this.logout} /> : <Login login={this.login} />
+        this.state.authenticated ? <Homepage logout={this.logout} username={this.state.username} /> : <Login login={this.login} failedLogin={this.state.failedLogin} />
       )
   } 
 }
 
+///////////////////////////////////////////////
 // Login component
+///////////////////////////////////////////////
 class Login extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {username: '', password: '', failedLogin: false};
+    this.state = {username: '', password: ''};
 
     // This binding is necessary to make `this` work in the callback
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -60,7 +70,7 @@ class Login extends React.Component{
       // this.props.failedLogin = false;
 
       // this.props.login(e.target.value);
-      this.props.login(this.state.username);
+      this.props.login(true, this.state.username);
     }
     else
       // this.setState({
@@ -69,10 +79,11 @@ class Login extends React.Component{
       // });
 
       // this.props.authenticated = false;
-      this.setState({failedLogin: true});
+      this.props.login(false, '');
   }
   
   render() {
+    const failedLogin = this.props.failedLogin;
     return (
       <div className="App">
         <header className="App-header">
@@ -89,38 +100,39 @@ class Login extends React.Component{
             <input type="text" id="password" name="password" onChange={this.handlePasswordChange} />
             <br/><input type="submit" value="Submit" onClick={this.handleSubmit} />
           {/* </form> */}
-          { this.state.failedLogin && 'Login failed' }
+          { failedLogin && 'Login failed' }
         </header>
       </div>
       );
   }
 }
 
-// Content component
-class Content extends React.Component{
+///////////////////////////////////////////////
+// Homepage component
+///////////////////////////////////////////////
+class Homepage extends React.Component{
   constructor(props) {
     super(props);
     // this.state = {username: '', password: ''};
 
     // This binding is necessary to make `this` work in the callback
-    // this.handleClick = this.handleClick.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
-  // handleClick() {
-  //   this.setState(prevState => ({
-  //     isToggleOn: !prevState.isToggleOn
-  //   }));
-  // }
+  handleLogout() {
+    this.props.logout();
+  }
   
   render() {
+    const username = this.props.username;
     return (
       <div className="App">
         <header className="App-header">
-          {/* <img src={logo} className="App-logo" alt="logo" /> */}
           <p>
-            Successful login.
+            Homepage.  Welcome, {username}
           </p>
-          Yay
+          Add additional content here
+          <br/><br/><input type="submit" value="Logout" onClick={this.handleLogout} />
         </header>
       </div>
       );
