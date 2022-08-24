@@ -5,16 +5,25 @@ import React from 'react';
 class App extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {authenticated: false, username: '', password: '', failedLogin: false};
+
+    const loggedInUsername = localStorage.getItem("username");
+    if (loggedInUsername)
+      this.state = {authenticated: true, username: loggedInUsername, password: '', failedLogin: false};
+    else
+      this.state = {authenticated: false, username: '', password: '', failedLogin: false};
   }
   
   login = (success, username) => {
     if (success)
+    {
+      localStorage.setItem('username', username);
+
       this.setState({
         authenticated: true,
         username: username,
         failedLogin: false
       });
+    }
     else
     this.setState({
       authenticated: false,
@@ -24,6 +33,8 @@ class App extends React.Component{
   }
 
   logout = () => {
+    localStorage.removeItem('username');
+
     this.setState({
       authenticated: false,
       username: ''
