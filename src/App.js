@@ -54,7 +54,7 @@ class App extends React.Component{
 class Login extends React.Component{
   constructor(props) {
     super(props);
-    this.state = {username: '', password: ''};
+    this.state = {username: '', password: '', loginSuccess: false};
 
     // This binding is necessary to make `this` work in the callback
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -70,8 +70,22 @@ class Login extends React.Component{
     this.setState({password: event.target.value});
   }
 
-  handleSubmit() {
-    if(this.state.username === 'joh' && this.state.password === 'test'){
+  handleSubmit = async () => {
+    // fetch('https://localhost:44329/authentication/Authenticate?' + new URLSearchParams({
+      // username: this.state.username, password: this.state.password, }));
+
+    // fetch('https://localhost:44329/authentication/test')
+    //   .then(response => response.json())
+    //     .then(data => this.setState({ loginSuccess: data }));;
+
+    const response = await fetch('https://localhost:44329/authentication/test');
+
+    // fetch('https://localhost:44329/authentication/Authenticate', 
+    //   { method: 'POST', body: JSON.stringify({ UserId : -1, Username : this.state.username, Password : this.state.password }) })
+    //     .then(response => response.json())
+    //       .then(data => this.setState({ loginSuccess: data }));;
+
+    if(response){
       // this.setState({
       //   authenticated: true,
       //   failedLogin: false
