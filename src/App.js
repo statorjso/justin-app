@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import React from 'react';
+import axios from 'axios';
 
 class App extends React.Component{
   constructor(props) {
@@ -74,18 +75,32 @@ class Login extends React.Component{
     // fetch('https://localhost:44329/authentication/Authenticate?' + new URLSearchParams({
       // username: this.state.username, password: this.state.password, }));
 
-    // fetch('https://localhost:44329/authentication/test')
-    //   .then(response => response.json())
-    //     .then(data => this.setState({ loginSuccess: data }));;
+    // await fetch('https://localhost:44329/authentication/test')
+    //   .then(response => this.setState({ loginSuccess: response }));
 
-    const response = await fetch('https://localhost:44329/authentication/test');
+    // let response = await fetch('https://localhost:44329/authentication/test');
+    // this.setState({ loginSuccess: await response.text() });
+    // // console.log(data);
 
-    // fetch('https://localhost:44329/authentication/Authenticate', 
-    //   { method: 'POST', body: JSON.stringify({ UserId : -1, Username : this.state.username, Password : this.state.password }) })
-    //     .then(response => response.json())
-    //       .then(data => this.setState({ loginSuccess: data }));;
+    // await axios.get('https://localhost:44329/authentication/test')
+    //   .then(response => this.setState({ loginSuccess: response.data }));
 
-    if(response){
+    const response = await axios.get('https://localhost:44329/authentication/test');
+    this.setState({ loginSuccess: true });
+
+    // const response =  fetch('https://localhost:44329/authentication/test');
+
+    // await fetch('https://localhost:44329/authentication/Authenticate', 
+    // { method: 'POST', body: JSON.stringify({ UserId : 22, Username : this.state.username, Password : this.state.password }) })
+    //   .then(response => response.json()).then(data => this.setState({ loginSuccess: data }));
+
+    // await fetch('https://localhost:44329/authentication/Authenticate', { method: 'POST' })
+    //     .then(response => response.json()).then(data => this.setState({ loginSuccess: data }));
+
+    // await $.get('https://localhost:44329/authentication/Authenticate', JSON.stringify({ UserId : 22, Username : this.state.username, Password : this.state.password }),  data => { this.setState({ loginSuccess: data }) });
+
+    // if(response){
+    if(response.data === true){
       // this.setState({
       //   authenticated: true,
       //   failedLogin: false
