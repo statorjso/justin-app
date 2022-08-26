@@ -85,8 +85,10 @@ class Login extends React.Component{
     // await axios.get('https://localhost:44329/authentication/test')
     //   .then(response => this.setState({ loginSuccess: response.data }));
 
-    const response = await axios.get('https://localhost:44329/authentication/test');
-    this.setState({ loginSuccess: true });
+    // const response = await axios.get('https://localhost:44329/authentication/test');
+    const response = await axios.post('https://localhost:44329/authentication/Authenticate',
+    { UserId : 22, Username : this.state.username, Password : this.state.password });
+    // this.setState({ loginSuccess: true });
 
     // const response =  fetch('https://localhost:44329/authentication/test');
 
