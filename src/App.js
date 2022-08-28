@@ -15,9 +15,11 @@ class App extends React.Component{
   }
   
   login = (success, username) => {
+  // login = (success, username, token) => {
     if (success)
     {
       localStorage.setItem('username', username);
+      // localStorage.setItem('token', token);
 
       this.setState({
         authenticated: true,
@@ -72,15 +74,6 @@ class Login extends React.Component{
   }
 
   handleSubmit = async () => {
-    // fetch('https://localhost:44329/authentication/Authenticate?' + new URLSearchParams({
-      // username: this.state.username, password: this.state.password, }));
-
-    // await fetch('https://localhost:44329/authentication/test')
-    //   .then(response => this.setState({ loginSuccess: response }));
-
-    // let response = await fetch('https://localhost:44329/authentication/test');
-    // this.setState({ loginSuccess: await response.text() });
-    // // console.log(data);
 
     // await axios.get('https://localhost:44329/authentication/test')
     //   .then(response => this.setState({ loginSuccess: response.data }));
@@ -89,20 +82,9 @@ class Login extends React.Component{
     const response = await axios.post('https://localhost:44329/authentication/Authenticate',
     { UserId : 22, Username : this.state.username, Password : this.state.password });
     // this.setState({ loginSuccess: true });
-
-    // const response =  fetch('https://localhost:44329/authentication/test');
-
-    // await fetch('https://localhost:44329/authentication/Authenticate', 
-    // { method: 'POST', body: JSON.stringify({ UserId : 22, Username : this.state.username, Password : this.state.password }) })
-    //   .then(response => response.json()).then(data => this.setState({ loginSuccess: data }));
-
-    // await fetch('https://localhost:44329/authentication/Authenticate', { method: 'POST' })
-    //     .then(response => response.json()).then(data => this.setState({ loginSuccess: data }));
-
-    // await $.get('https://localhost:44329/authentication/Authenticate', JSON.stringify({ UserId : 22, Username : this.state.username, Password : this.state.password }),  data => { this.setState({ loginSuccess: data }) });
-
-    // if(response){
+    // if(response){    
     if(response.data === true){
+    // if(response.data && response.data !== ''){
       // this.setState({
       //   authenticated: true,
       //   failedLogin: false
@@ -113,6 +95,7 @@ class Login extends React.Component{
 
       // this.props.login(e.target.value);
       this.props.login(true, this.state.username);
+      // this.props.login(true, this.state.username, response.data);
     }
     else
       // this.setState({
