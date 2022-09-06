@@ -14,12 +14,12 @@ class App extends React.Component{
       this.state = {authenticated: false, username: '', password: '', failedLogin: false};
   }
   
-  login = (success, username) => {
-  // login = (success, username, token) => {
+  // login = (success, username) => {
+  login = (success, username, token) => {
     if (success)
     {
       localStorage.setItem('username', username);
-      // localStorage.setItem('token', token);
+      localStorage.setItem('token', token);
 
       this.setState({
         authenticated: true,
@@ -31,7 +31,8 @@ class App extends React.Component{
     this.setState({
       authenticated: false,
       username: '',
-      failedLogin: true
+      failedLogin: true,
+      token: null
     });
   }
 
@@ -82,9 +83,10 @@ class Login extends React.Component{
     const response = await axios.post('https://localhost:44329/authentication/Authenticate',
     { UserId : 22, Username : this.state.username, Password : this.state.password });
     // this.setState({ loginSuccess: true });
+
     // if(response){    
-    if(response.data === true){
-    // if(response.data && response.data !== ''){
+    // if(response.data === true){
+    if(response.data && response.data !== ''){
       // this.setState({
       //   authenticated: true,
       //   failedLogin: false
@@ -94,8 +96,8 @@ class Login extends React.Component{
       // this.props.failedLogin = false;
 
       // this.props.login(e.target.value);
-      this.props.login(true, this.state.username);
-      // this.props.login(true, this.state.username, response.data);
+      // this.props.login(true, this.state.username);
+      this.props.login(true, this.state.username, response.data);
     }
     else
       // this.setState({
@@ -104,7 +106,7 @@ class Login extends React.Component{
       // });
 
       // this.props.authenticated = false;
-      this.props.login(false, '');
+      this.props.login(false, '', null);
   }
   
   render() {
